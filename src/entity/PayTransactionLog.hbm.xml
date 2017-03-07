@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-24 14:28:13 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="entity.PayTransactionLog" table="PAYTRANSACTIONLOG">
+        <id name="trid" type="java.lang.Integer">
+            <column name="TRID" />
+            <generator class="native">
+            <param name="sequence">HIBERNATE_TRANSACTION_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="tr_money" type="java.lang.Double">
+            <column name="TR_MONEY" />
+        </property>
+        <property name="datetime" type="java.util.Date" >
+            <column name="DATETIME" />
+        </property>
+      <many-to-one name="type" class="entity.TransactionType" cascade="save-update" fetch="join" unique="true" foreign-key="FK_TYPEID">
+          <column name="TYPEID"></column>
+     </many-to-one>
+        <property name="orderstatus" type="java.lang.Integer">
+            <column name="ORDERSTATUS"></column>
+        </property>
+         <property name="paymentsn" type="java.lang.String" unique="true" unique-key="UK_PAYMENTSN">
+              <column name="PAYMENTSN"></column>
+       </property>
+        <many-to-one name="bound" class="entity.Bound" foreign-key="FK_BID" fetch="join">
+            <column name="BID"></column>
+        </many-to-one>
+    </class>
+</hibernate-mapping>
