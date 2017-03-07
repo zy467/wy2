@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-24 14:28:13 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="entity.Account" table="ACCOUNT">
+        <id name="accountid" type="java.lang.Integer">
+            <column name="ACCOUNTID" />
+            <generator class="native">
+            <param name="sequence">HIBERNATE_ACCOUNT_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="username" type="java.lang.String" unique="true" unique-key="UNIQUE_USERNAME">
+            <column name="USERNAME" />
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="PASSWORD" />
+        </property>
+        <property name="balance" type="java.lang.Double">
+            <column name="BALANCE" />
+        </property>
+        <many-to-one name="status" class="entity.Status" cascade="save-update" fetch="join" unique="true" foreign-key="FOREIGN_SID">
+            <column name="SID"></column>
+        </many-to-one>
+        <many-to-one name="role" class="entity.Role" cascade="save-update" fetch="join" unique="true" foreign-key="FOREIGN_RID">
+             <column name="RID"></column>
+       </many-to-one>
+        <set name="transactions" inverse="true" table="TRANSACTIONLOG" lazy="true" cascade="all" fetch="join">
+            <key foreign-key="FOREIGN_ACCOUNTID">
+               <column name="ACCOUNTID"></column>
+           </key>
+              <one-to-many class="entity.TransactionLog"/>
+        </set>
+        <one-to-one name="personinfo" class="entity.Personinfo" cascade="all" property-ref="account" foreign-key="FOREIGN_ACCONTID" ></one-to-one>
+        <set name="bounds" inverse="true" table="BOUND" lazy="true" fetch="join">
+           <key foreign-key="FOREIGN_ACCOUNTID">
+              <column name="ACCOUNTID"></column>
+           </key>
+           <one-to-many class="entity.Bound"/>
+         </set>
+    </class>
+</hibernate-mapping>

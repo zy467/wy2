@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC 
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" 
+   "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+    <constant name="struts.devMode" value="true" />
+    
+   <package name="action" extends="struts-default">
+   
+   <interceptors>
+   
+     <interceptor name="loginInterceptor" class="interceptor.RequestInterceptor">
+       <param name="excludeMethods">register,createImg,login,cardBound,putOff,quickPay,adjustment,refund,verify,qwe,add</param>
+     </interceptor>
+     
+     <interceptor name="adminloginInterceptor" class="interceptor.AdminRequestInterceptor">
+       <param name="excludeMethods">register,createImg,login,verify,qwe,add,alogin</param>
+     </interceptor>
+     
+     <interceptor-stack name="myInterceptorStack">
+           <interceptor-ref name="defaultStack"></interceptor-ref>
+           <interceptor-ref name="loginInterceptor"></interceptor-ref>
+     </interceptor-stack>
+     
+     <interceptor-stack name="adminInterceptorStack">
+     	<interceptor-ref name="defaultStack"></interceptor-ref>
+           <interceptor-ref name="adminloginInterceptor"></interceptor-ref>
+     </interceptor-stack>
+     
+   </interceptors>
+    <!-- 默认处理action -->
+     <default-action-ref name="noFound"/>
+   
+     <action name="action_*" class="loginaction" method="{1}">
+      	<!-- 注册 --> 
+      	 <result name="register">register.jsp</result>
+     	<!-- 主页-->
+         <result name="login">login.jsp</result>
+     	<!-- 用户 -->
+         <result name="userCheckInformation">userCheckInformation.jsp</result>
+         <result name="userMI">userMI.jsp</result>
+         <result name="success">userIndex.jsp</result>
+         <result name="userModifyPassword">userMPwd.jsp</result>
+         <result name="userTransfer">userTransfer.jsp</result>
+         <result name="userCheckTransaction">userCheckTransaction.jsp</result>
+         <result name="plot">plot.jsp</result>
+         <result name="500">/WEB-INF/error/error.jsp</result>
+         <result name="interceptor">/WEB-INF/error/interceptor.jsp</result>
+         <result name="downloadExcel" type="stream">
+         <!-- 下载文件的类型，如果你不知道是什么格式，可以去 tomcat\conf\web.xml下找 -->  
+                <param name="contentType">application/vnd.ms-excel</param>  
+                <!-- 返回流 excelStream为action中的流变量名称 -->  
+                <param name="inputName">excelStream</param>  
+                <!-- attachment 这个位置的参数挺特殊的，可以设置成下载时，是否出现个下载提示框，或者直接下载之类的。  
+                fileName指定生成的文件名字(适合动态生成文件名，比如做报表时，一般都要说是几月的统计数据之类)为action中变量-->  
+                <param name="contentDisposition">  
+                    attachment;filename=${excelFileName}  
+                </param>  
+                <param name="bufferSize">1024</param>  
+         </result>
+		 <!-- 调用intercept -->
+		 <interceptor-ref name="myInterceptorStack"></interceptor-ref>
+		 <!-- 异常处理 -->
+	<!-- 	 <exception-mapping result="500" exception="java.lang.Exception"></exception-mapping> -->
+		 
+     </action>
+     <action name="adminAction_*" class="loginaction" method="{1}">
+        <!-- 管理员 -->
+         <result name="users">adminUsers.jsp</result>
+         <result type="redirectAction" name="zjb">adminAction_findAllAccount</result>
+          <result type="redirectAction" name="zhj">adminAction_findAllFreeze</result>
+           <result type="redirectAction" name="zyp">adminAction_findAllSu</result>
+		 <result name="freeze">adminFreeze.jsp</result>
+		 <result name="systemRecord">adminST.jsp</result>
+		 <result name="startUsing">adminAlreadySU.jsp</result>
+		 <result name="modifyNotice">adminModifyNotice.jsp</result>
+		 <result name="adminModifyPassword">adminModifyPwd.jsp</result>
+		 <result name="asuccess">adminIndex.jsp</result>
+		 <result name="alogin">alogin.jsp</result>
+		 <result name="500">/WEB-INF/error/adminerror.jsp</result>
+	     <result name="admininterceptor">/WEB-INF/error/admininterceptor.jsp</result>
+		 
+		 <!-- 调用intercept -->
+		 <interceptor-ref name="adminInterceptorStack"></interceptor-ref>
+		 <!-- 异常处理 -->
+		 <!-- <exception-mapping result="500" exception="java.lang.Exception"></exception-mapping> -->
+		 
+     </action>
+        <!-- 默认处理action -->
+         <action name="noFound" class="action.ErrorAction">
+             <result name="404">/WEB-INF/error/error.jsp</result>
+         </action>
+      
+      
+   </package>
+</struts>    

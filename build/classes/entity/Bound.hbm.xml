@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-24 14:28:13 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="entity.Bound" table="BOUND">
+        <id name="bid" type="java.lang.String">
+            <column name="BID" />
+            <generator class="assigned"/>
+        </id>
+         <property name="paymentid" type="java.lang.Integer">
+            <column name="PAYMENTID" />
+        </property>
+         <many-to-one name="account" class="entity.Account" fetch="join"  foreign-key="FK_ACCOUNTID">
+             <column name="ACCOUNTID"></column>
+       </many-to-one>
+       <set name="paytransactionlogs"  table="PAYTRANSACTIONLOG" lazy="true" fetch="join">
+           <key foreign-key="FK_BID">
+              <column name="BID"></column>
+           </key>
+           <one-to-many class="entity.PayTransactionLog"/>
+         </set>
+    </class>
+</hibernate-mapping>

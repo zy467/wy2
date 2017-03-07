@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-24 14:28:13 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="entity.Personinfo" table="PERSONINFO">
+        <id name="pid" type="java.lang.String">
+            <column name="PID" />
+            <generator class="assigned"/>
+            
+        </id>
+        
+     <many-to-one name="account" class="entity.Account" cascade="all" fetch="join" unique="true" foreign-key="FOREIGN_ACCONTID" >
+          <column name="accountid"></column>
+     </many-to-one>
+        <property name="realname" type="java.lang.String">
+            <column name="REALNAME" />
+        </property>
+        <property name="age" type="java.lang.Integer">
+            <column name="AGE" />
+        </property>
+        <property name="sex" type="java.lang.String">
+            <column name="SEX" />
+        </property>
+        <property name="cardid" type="java.lang.String" unique-key="UNIQUE_CARDID">
+            <column name="CARDID" />
+        </property>
+        <property name="telephone" type="java.lang.String">
+            <column name="TELEPHONE" />
+        </property>
+    </class>
+</hibernate-mapping>
